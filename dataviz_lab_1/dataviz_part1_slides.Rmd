@@ -1,0 +1,274 @@
+---
+  title: "Introduction to Data Vizualization in R"
+  author: "**Jennifer Houchins**"
+  institute: "NCSU - Friday Institute"
+  date: '`r format(Sys.time(), "%B %d, %Y")`'
+  output:
+    xaringan::moon_reader:
+      css:
+       - default
+       - css/laser.css
+       - css/laser-fonts.css
+      lib_dir: libs                        # creates directory for libraries
+      seal: false                          # false: custom title slide
+      nature:
+        highlightStyle: default         # highlighting syntax for code
+        highlightLines: true               # true: enables code line highlighting
+        highlightLanguage: ["r"]           # languages to highlight
+        countIncrementalSlides: false      # false: disables counting of incremental slides
+        ratio: "16:9"                      # 4:3 for standard size,16:9
+        slideNumberFormat: |
+         <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+         </div>
+---
+class: clear, title-slide, inverse, center, top, middle
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, echo=FALSE}
+# then load all the relevant packages
+pacman::p_load(pacman, knitr)
+```
+
+```{r xaringan-panelset, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+# these allow any code snippets to be copied to the clipboard so they 
+# can be pasted easily
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+```{r xaringan-extras, echo=FALSE}
+xaringanExtra::use_tile_view()
+
+```
+
+# `r rmarkdown::metadata$title`
+----
+### `r rmarkdown::metadata$author`
+### `r format(Sys.time(), "%B %d, %Y")`
+
+---
+# Inroduction to DataViz
+
+
+.pull-left[**Part-1  Conceptual Overview**
+- Purpose of Visualizations
+- Principles
+  + Perception
+  + Cognitive Processing
+
+]
+
+.pull-right[**Part-2  Code-Along**
+- R Markdown Syntax
+- ggplot grammar
+- Scatter plot
+
+]
+
+class: clear, inverse, middle, center
+
+Part 1:
+
+----
+
+Intro to Data Visualization: Conceptual Overview
+
+---
+# Purpose of Data Visualizations
+
+.panelset[
+
+.panel[.panel-name[Panel 1]
+
+.pull-left[
+The [LASER Institute](https://www.fi.ncsu.edu/projects/laser-institute/) is a **professional development program**for early and mid-career researchers and funded by the National Science Foundation (ECR: BCSER).
+]
+
+.pull-right[
+<img src="img/website.png" height="450px"/>
+]
+]
+
+.panel[.panel-name[Panel 2]
+
+The [LASER Institute](https://www.fi.ncsu.edu/projects/laser-institute/) is a **professional development program**for early and mid-career researchers and funded by the National Science Foundation (ECR: BCSER).
+]
+
+.panel[.panel-name[Panel 3]
+
+The [LASER Institute](https://www.fi.ncsu.edu/projects/laser-institute/) is a **professional development program**for early and mid-career researchers and funded by the National Science Foundation (ECR: BCSER).
+]
+
+.panel[.panel-name[Panel 4]
+
+The [LASER Institute](https://www.fi.ncsu.edu/projects/laser-institute/) is a **professional development program**for early and mid-career researchers and funded by the National Science Foundation (ECR: BCSER).
+]
+
+
+]
+
+
+---
+class: clear, laser
+
+.quote[Education is the most powerful weapon which you can use to change the world.]
+
+.author[~ Nelson Mandela]
+
+---
+class: clear, inverse, middle, center
+Part 2:
+
+----
+
+Code-Along
+
+
+---
+
+# R Markdown Syntax
+
+.panelset[
+
+.panel[.panel-name[Global Options]
+
+.pull-left[
+ - 1. `R General` -> (untick) Restore .RData into workspace at startup.
+ - 2. `R General` -> Save workspace to .RData on exit: Never
+ - 3. `R Markdown` -> Show output preview in: Viewer Pane
+    ]
+
+.pull-right[
+<img src="img/global.png" height="425px"/>
+]
+
+]
+???
+
+If you haven't already we will set up our Global options so that we have a better workflow. 
+
+First, Go to the Global options from Tools.
+Tools > GLobal Options > R General > (untick) Restore .RData into workspace at startup.
+
+Second,  > R General > Change Save workspace to .RData on exit: to Never
+
+Third, > In R Markdown Change the drop down in Show output preview in: Viewer Pane so that you can see the slides.
+
+Click Apply and Save.
+
+.panel[.panel-name[YAML Header]
+.pull-left[
+
+Check out this site on[Yaml heading](https://zsmith27.github.io/rmarkdown_crash-course/lesson-4-yaml-headers.html) 
+- "Title"
+- "Author"
+- "Date" 
+- Output:
+    + HTML
+    + toc
+    + theme
+
+]
+
+.pull-right[
+<img src="img/yaml.png" height="425px"/>
+]
+
+]
+???
+
+In the yaml heading you will see an author, co author, date set to current date, you can also set that tho what ever date you want and an output. 
+Outputs can change depending on what type of publication you are producing. We will learn more about this in Foundation lab 4.
+I've included a link to learn more about yaml heading on your own time.
+
+.panel[.panel-name[Headers]
+
+    + # One
+    + ## Two
+    + ### Three
+    + #### Four
+    + ##### Five
+
+
+
+
+]
+???
+
+To create headers you use the hashtag. The more hashtags you use the smaller your heading font.
+
+.panel[.panel-name[Knit]
+
+.center[
+<img src="img/knit_button.png" height="425px"/>
+]
+]
+
+???
+Let's go ahead and knit so that we can see the headings.
+Just click on the ball of yarn with kneedles.
+
+You can also view your document in script or visual editor.
+
+To view in visual editor on desktop click on the gear and then visual editor, you can toggle back and forth.
+
+
+.panel[.panel-name[Code-chunk]
+
+.pull-left[
+
+1. Menu Bar > 'Code' > 'insert chunk'
+
+2. Add a code chunk by holding down `Ctrl` + `Alt` + `I`
+]
+
+.pull-right[
+<img src="img/code_chunk.png" height="425px"/>
+
+]
+
+]
+???
+
+To add a Code chunk press `Ctrl` + `Alt` + `I` at the same time or from the tool bar menu 'Code' > 'insert chunk'
+
+add here to run you can click the green arrow, sun everything above by clicking the run above arrow . or to run the chuc=nck you can use the hot keys `ctrl` `enter`.
+
+]
+
+---
+class: inverse, clear, center
+
+## .font130[.center[**Thank you!**]]
+
+.left-col[
+.center[<img style="border-radius: 50%;" src="img/author1.jpeg" height="120px"/><br/>**First Author**<br/><mailto:author1@email.com>]
+]
+.center-col[
+.center[<img style="border-radius: 50%;" src="img/author2.jpeg" height="120px"/><br/>**Second Author**<br/><mailto:author2@email.com>]
+]
+.right-col[
+.center[<img style="border-radius: 50%;" src="img/author3.jpeg" height="120px"/><br/>**Third Author**<br/><mailto:author3@email.com>]
+]
+<br/><br/><br/><br/><br/>
+
+.pull-left-narrow[<br/>.center[<img style="border-radius: 50%;" src="https://www.nsf.gov/images/logos/NSF_4-Color_bitmap_Logo.png" height="100px"/> ]]
+
+.pull-right-wide[
+.left[.font70[
+This work was supported by countless cups of hot tea, cookies, and the RStats Xaringan community willingness to post of plethora of tutorials. But you may wish to thank your funding agency (e.g., the National Science Foundation) and put their logo on the left as shown here.
+]]
+]
